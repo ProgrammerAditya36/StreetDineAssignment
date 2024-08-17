@@ -1,94 +1,33 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
-import { Icon } from "@mui/material";
-
+import React, { useContext } from "react";
+import { Context } from "../context/Context";
 const Navbar = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    const navItems = [
-        {
-            name: "Dashboard",
-            route: "/",
-            icon: "dashboard",
-        },
-        {
-            name: "Orders",
-            route: "/orders",
-            icon: "list_alt",
-        },
-        {
-            name: "Create Order",
-            route: "/create_order",
-            icon: "add_circle",
-        },
-        {
-            name: "Menu",
-            route: "/menu",
-            icon: "restaurant_menu",
-        },
-        {
-            name: "Tables",
-            route: "/tables",
-            icon: "table",
-        },
-        {
-            name: "Employees",
-            route: "/employees",
-            icon: "group",
-        },
-        {
-            name: "Inventory",
-            route: "/inventory",
-            icon: "inventory_2",
-        },
-        {
-            name: "Kitchen Orders",
-            route: "/kitchen",
-            icon: "kitchen",
-        },
-        {
-            name: "Analytics",
-            route: "/analytics",
-            icon: "analytics",
-        },
-        {
-            name: "Settings",
-            route: "/settings",
-            icon: "settings",
-        },
-    ];
-
-    const handleNavigation = (route) => {
-        navigate(route);
+    const { title, user } = useContext(Context);
+    const options = {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
     };
+    const today = new Date().toLocaleDateString("en-GB", options);
 
     return (
-        <div className="flex h-full flex-col items-center bg-light">
-            <div className="h-[110px] w-[110px]">
-                <img src={logo} className="w-full object-cover" alt="Logo" />
-            </div>
-            <div className="w-full px-7">
-                <ul className="flex w-full flex-col gap-[10px]">
-                    {navItems.map((item, index) => (
-                        <li
-                            key={index}
-                            className={`nav-item flex w-full cursor-pointer items-center gap-[5px] ${
-                                location.pathname === item.route
-                                    ? "selected"
-                                    : ""
-                            }`}
-                            onClick={() => handleNavigation(item.route)}
-                        >
-                            <Icon baseClassName="material-symbols-outlined">
-                                {item.icon}
-                            </Icon>
-
-                            <span>{item.name}</span>
-                        </li>
-                    ))}
-                </ul>
+        <div className="flex items-center justify-between">
+            <h1 className="title">{title}</h1>
+            <div className="flex items-center gap-9">
+                <p className="text-lg font-semibold">{today}</p>
+                <div className="flex items-center gap-2">
+                    <img
+                        src={user.imgUrl}
+                        alt="user"
+                        className="h-8 w-8 rounded-full"
+                    />
+                    <div className="flex flex-col justify-center text-center">
+                        <p className="text-lg font-medium">{user.name}</p>
+                        <p className="text-xs font-medium text-[#87449a]">
+                            {user.role}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     );
